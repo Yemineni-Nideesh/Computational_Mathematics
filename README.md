@@ -28,7 +28,7 @@ I'm listing these on purpose, because knowing where a method breaks is part of u
 
 - **Riemann sums:** the left and right sums only bracket the true area when the function is monotonic on the interval. For x², that holds when both endpoints are on the same side of 0. For the semicircle, it fails when the interval crosses x = 0, where the function peaks. In those cases the two values are estimates, not strict bounds. The sums also use `float`, so rounding error builds up over 1000 additions.
 - **Derivative:** this is a forward-difference approximation, not an exact derivative. A very small h also causes floating-point cancellation errors. Compare against the exact answer, 40x³ + 6x² + 1.
-- **Euler's number:** the sum reaches 6 decimal places from about n = 10. The factorial function uses `int`, which overflows above 12!, so the program is only reliable for n ≤ 12. Switching the factorial to `double` would fix this.
+- **Euler's number:** the sum reaches 6 decimal places from about n = 10, and the program works for n up to 33 (at n = 34 the factorial wraps to 0 and the result is `inf`). Factorials are stored as `int`, which overflows above 12!, so beyond n = 12 the extra digits are contaminated by overflow error. Switching the factorial to `double` would remove both problems.
 - **Angle between lines:** it compares floats with `==` and assumes each line's two points are distinct.
 - **Matrix multiplication:** the matrices are hardcoded, not read from user input.
 
