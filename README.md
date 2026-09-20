@@ -1,42 +1,46 @@
-# Computational Mathematics & Algorithmic Foundations
-### Independent Explorations in Numerical Analysis, Coordinate Systems, and Matrix Spaces
-**Author:** Yemineni Nideesh  
-**Institution:** Indian Institute of Technology (IIT) Bhubaneswar  
-**Language:** Pure C (`<stdio.h>`, `<math.h>`)
+# Numerical Methods and Math in C
 
----
+Small C programs where I turn ideas from calculus, coordinate geometry, and linear algebra into working code. Each program is short, uses only `<stdio.h>` and `<math.h>`, and is meant to help me understand the math and how numbers behave on a computer.
 
-## 📌 Project Overview
-This repository contains a curated collection of C programs developed to bridge the gap between computational logic and core mathematical concepts like Calculus, Linear Algebra, and Coordinate Geometry. 
+**Author:** Yemineni Nideesh, B.Tech CSE, IIT Bhubaneswar (2025–2029)
 
-Instead of standard software engineering tasks, these scripts focus on numerical methods, boundary value estimations, handling spatial geometric singularities, and multi-dimensional space operations. These represent practical models of mapping mathematical equations into structured, stable, and deterministic code.
+## Programs
 
----
+| File | What it does |
+|---|---|
+| `reimann_semicircle_area_calculator.c` | Estimates the area under f(x) = √(1 − x²) between two points in [−1, 1], using left and right Riemann sums with 1000 rectangles. |
+| `reimann_x_2_area_calaculator.c` | Estimates the area under f(x) = x² between two points, using the same left/right Riemann sums. |
+| `angle_between_lines.c` | Takes two lines as pairs of endpoints, prints their slopes, and gives the acute angle between them in radians. Vertical lines are handled as special cases. |
+| `derivative_from_first_principle.c` | Approximates the derivative of 10x⁴ + 2x³ + x + 1 at a point using (f(x+h) − f(x)) / h with h = 0.000001. |
+| `euler_constant_approximation_taylor_series.c` | Approximates e by summing 1/0! + 1/1! + … + 1/n!. |
+| `matrix_multiplier.c` | Multiplies a 2×3 matrix by a 3×2 matrix with nested loops and prints the 2×2 result. |
 
-## 📂 Repository Contents & File Directory
+## What I practiced
 
-### 1. Bounded Area Numerical Integration
-* **`riemann_semicircle.c`**: Performs numerical definite integration under a semicircular boundary curve (\(f(x) = \sqrt{1-x^2}\)) over a user-defined interval within the domain \([-1, 1]\). Deploys left-hand and right-hand Riemann sums to calculate explicit maximum and minimum area parameters, tracking mathematical error thresholds.
-* **`riemann_parabola.c`**: Evaluates definite integral bounds under a parabolic curve (f(x) = x²). Computes discrete rectifying rectangular subdivisions over 1000 iterative steps to squeeze a continuous integration space into a measurable floating-point threshold.
+- Turning a formula (Riemann sum, difference quotient, Taylor series) into a loop.
+- Handling edge cases: vertical lines have no finite slope, so they need their own branch.
+- Choosing data types carefully. Factorials grow fast, and `int` overflows quickly.
+- Working with nested arrays and loops for matrix multiplication.
 
-### 2. Geometry & Differential Calculators
-* **`line_intersection.c`**: Automates multi-point spatial coordinate analytics to compute slope gradients and acute angular intersections across Euclidean planes. Integrates custom safety structures for vertical lines (a=c or e=g) using the `INFINITY` constant from `<math.h>` to completely prevent division-by-zero runtime crashes.
-* **`derivative.c`**: Calculates first-principle mathematical limits (\(\lim_{h \to 0} \frac{f(x+h)-f(x)}{h}\)) for high-degree polynomial functions (10x⁴ + 2x³ + x + 1). Utilizes an ultra-fine limit discretization step size (h = 0.000001) to evaluate true continuous slopes.
+## Known limitations
 
-### 3. Approximation Theory & Linear Spaces
-* **`euler_approximation.c`**: Approximates the transcendental constant value of Euler's number (e) to 6 decimal places. Evaluates an infinite Taylor series expansion (\(1 + \frac{1}{1!} + \frac{1}{2!} + \dots\)) using dynamic storage loops linked to an iterative factorial calculation engine.
-* **`matrix_multiplication.c`**: Executes linear space calculations by deploying multidimensional arrays (2 × 3 and 3 × 2 matrices) processed through nested iteration tracks to calculate standard dot-product matrix transformations.
+I'm listing these on purpose, because knowing where a method breaks is part of understanding it.
 
----
+- **Riemann sums:** the left and right sums only bracket the true area when the function is monotonic on the interval. For x², that holds when both endpoints are on the same side of 0. For the semicircle, it fails when the interval crosses x = 0, where the function peaks. In those cases the two values are estimates, not strict bounds. The sums also use `float`, so rounding error builds up over 1000 additions.
+- **Derivative:** this is a forward-difference approximation, not an exact derivative. A very small h also causes floating-point cancellation errors. Compare against the exact answer, 40x³ + 6x² + 1.
+- **Euler's number:** the sum reaches 6 decimal places from about n = 10. The factorial function uses `int`, which overflows above 12!, so the program is only reliable for n ≤ 12. Switching the factorial to `double` would fix this.
+- **Angle between lines:** it compares floats with `==` and assumes each line's two points are distinct.
+- **Matrix multiplication:** the matrices are hardcoded, not read from user input.
 
-## 🧠 Key Quantitative & Technical Takeaways
+## Build and run
 
-* **Singularity Safeguards**: Designed custom exception-handling frameworks to address vertical lines and infinite slopes (m = ∞) gracefully, preventing computational undefined states.
-* **Discrete Error Bounding**: Leveraged parallel calculation tracks (Left vs. Right Riemann methods) to systematically establish explicit upper and lower bounds around a continuous curve.
-* **Floating-Point Precision Tracking**: Managed constraints regarding array scaling and data-type selection (`double` arrays vs. `int` return definitions) during complex factorial loops.
+```bash
+gcc angle_between_lines.c -o angle -lm
+./angle
+```
 
----
+## Roadmap
 
-## 🚀 Ongoing Roadmap
-* Integrate upcoming structural C scripts from my 3rd Semester **Data Structures Laboratory** (Linked lists, Stacks, Queues, Binary Search Trees).
-* Deploy statistical tracking tools using concepts from ongoing **Probability and Statistics** coursework.
+- Data structures from my 3rd-semester lab: linked lists, stacks, queues, binary search trees.
+- Small statistics programs alongside my Probability and Statistics course.
+- Fix the limitations above (`double` precision, factorial overflow, matrix input).
